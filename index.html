@@ -168,8 +168,14 @@
 						$("#listContent").css({
 							display:"none"
 						});
-						$('.cs-img-mask').removeClass('em-boxshadow');
-						$("[data-housename='"+mc+"']").addClass('em-boxshadow');
+						$('.cs-img-mask').css({
+						    "background": "transparent",
+						    "border": "0"
+						});
+						$("[data-housename='"+mc+"']").css({
+						    "background": "rgba(0, 0, 0, 0.15)",
+						    "border": "2px solid rgba(0, 204, 204, .5)"
+						});
 						$('#detailContent').empty();
 						$('#detailContent').css({
 							display:"block"
