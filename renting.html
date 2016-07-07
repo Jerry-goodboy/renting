@@ -61,6 +61,30 @@
 			    "首创康桥郡": 9000,
 			    "煦园": 9000
 			};
+			var rentingObj = {
+			    "宝龙欧洲城": 1700,
+			    "碧桂园·滨海城": 2100,
+			    "和畅园": 1966.66666666667,
+			    "红树湾花园": 2880,
+			    "季景园": 2261.53846153846,
+			    "家和园": 2100,
+			    "锦庐园": 3680,
+			    "景杉园": 2150,
+			    "鲲贝园": 2350,
+			    "鲲玺园": 2233.33333333333,
+			    "鲲玉园": 2025,
+			    "兰苑": 3200,
+			    "美林园": 2466.66666666667,
+			    "美韵园": 2200,
+			    "荣馨园": 1200,
+			    "尚苑": 1900,
+			    "仕景苑": 2300,
+			    "首玺园": 2100,
+			    "天和园": 2200,
+			    "新新家园": 2800,
+			    "雅境园": 1933.33333333333,
+			    "悦馨苑": 2300
+			};
 			var rentingHouseArr = ["宝龙欧洲城", "碧桂园·滨海城", "和畅园", "红树湾花园", "季景园", "家和园", "锦庐园", "景杉园", "鲲贝园", "鲲玺园", "鲲玉园", "兰苑", "美林园", "美韵园", "荣馨园", "尚苑", "仕景苑", "首玺园", "天和园", "新新家园", "雅境园", "悦馨苑"];
 			var imgArr = [
 				"imgs/a.jpg",
@@ -105,7 +129,10 @@
 
 				var estateArr = ['和畅园','美林园','天和园','芦花庄园','锦庐园','南苑','兰苑','荣馨园','首玺园','尚苑','建设公寓','世茂生态城','金航湾','蓝领公寓','宝龙欧洲城','碧桂园•滨海城','力高•阳光海岸','新新家园','季景园','鲲玉园','鲲贝园','景杉园','香堤苑','鲲玺园','红树湾花园','芙蓉北苑','雅境园','芙蓉南苑','家和园','悦馨苑','兰景园','美韵园','璟苑','新颐园','依水园','首创康桥郡','澜水苑','煦园',"颐湖居","慧水苑","雅馨园"];
 
-				var queryCondition = "DM in ('和畅园','颐湖居','慧水苑','雅馨园','美林园','天和园','芦花庄园','锦庐园','南苑','兰苑','荣馨园','首玺园','尚苑','建设公寓','世茂生态城','金航湾','蓝领公寓','宝龙欧洲城','碧桂园•滨海城','力高•阳光海岸','新新家园','季景园','鲲玉园','鲲贝园','景杉园','香堤苑','鲲玺园','红树湾花园','芙蓉北苑','雅境园','芙蓉南苑','家和园','悦馨苑','兰景园','美韵园','璟苑','新颐园','依水园','首创康桥郡','澜水苑','煦园')";
+				var queryCondition = "DM in ('宝龙欧洲城', '碧桂园·滨海城', '和畅园', '红树湾花园', '季景园', '家和园', '锦庐园', '景杉园', '鲲贝园', '鲲玺园', '鲲玉园', '兰苑', '美林园', '美韵园', '荣馨园', '尚苑', '仕景苑', '首玺园', '天和园', '新新家园', '雅境园', '悦馨苑')";
+
+				// var queryCondition = "DM in ('和畅园','颐湖居','慧水苑','雅馨园','美林园','天和园','芦花庄园','锦庐园','南苑','兰苑','荣馨园','首玺园','尚苑','建设公寓','世茂生态城','金航湾','蓝领公寓','宝龙欧洲城','碧桂园•滨海城','力高•阳光海岸','新新家园','季景园','鲲玉园','鲲贝园','景杉园','香堤苑','鲲玺园','红树湾花园','芙蓉北苑','雅境园','芙蓉南苑','家和园','悦馨苑','兰景园','美韵园','璟苑','新颐园','依水园','首创康桥郡','澜水苑','煦园')";
+
 				// var queryCondition = "KFS='宝龙'"
 
 				queryMap(queryCondition, genSize, genColor);
@@ -153,7 +180,7 @@
 							html += '<div class="cs-img-block">';
 							html += '<img src="'+ (i<8?imgArr[i]:'imgs/a.jpg') + '" style="max-width:100%">';
 							html += '<h3 class="cs-img-h3">'+ mc +'</h3>';
-							html += '<p class="cs-img-p">&yen;'+(typeof avgPrice[mc] == 'undefined'?'9000':avgPrice[mc])+'</p>';
+							html += '<p class="cs-img-p">&yen;'+(typeof Math.round(rentingObj[mc]) == 'undefined'?'2000':Math.round(rentingObj[mc]))+'</p>';
 							html += '<div class="cs-img-mask" data-housename="'+mc+'"></div></div>';
 						}
 						$("#listContent").append(html);
@@ -209,7 +236,7 @@
 						html += '<table class="cs-detail-table" cellspacing="0">';
 						html += '<tr><td>小区名称</td><td>开发商</td><td>上市套数</td><td>成交套数</td><td>平均价格</td><td>入住率</td></tr>';
 						html += '<tr><td>'+houseName+'</td><td>'+kfs+'</td><td>1000</td><td>1000</td>';
-						html += '<td>'+(typeof avgPrice[houseName] == 'undefined'?'9000':avgPrice[houseName])+'</td><td>90%</td></tr></table>';
+						html += '<td>'+(typeof Math.round(rentingObj[houseName]) == 'undefined'?'2000':Math.round(rentingObj[houseName]))+'</td><td>90%</td></tr></table>';
 						html += '<div id="chart1"></div>';
 						html += '<div id="chart2"></div>';
 						html += '<div id="chart3"></div>';
@@ -245,7 +272,7 @@
 				html += '<table class="cs-detail-table" cellspacing="0">';
 				html += '<tr><td>小区名称</td><td>开发商</td><td>上市套数</td><td>成交套数</td><td>平均价格</td><td>入住率</td></tr>';
 				html += '<tr><td>'+houseName+'</td><td>'+kfsObj[houseName]+'</td><td>1000</td><td>1000</td>';
-				html += '<td>'+(typeof avgPrice[houseName] == 'undefined'?'9000':avgPrice[houseName])+'</td><td>90%</td></tr></table>';
+				html += '<td>'+(typeof Math.round(rentingObj[houseName]) == 'undefined'?'2000':Math.round(rentingObj[houseName]))+'</td><td>90%</td></tr></table>';
 				html += '<div id="chart1"></div>';
 				html += '<div id="chart2"></div>';
 				html += '<div id="chart3"></div>';
@@ -338,8 +365,8 @@
 				<div id="rangeProcess"></div>
 				<div id="rangeLeft"></div>
 				<div id="rangeRight"></div>
-				<span class="cs-span-price">&yen;4500</span>
-				<span class="cs-span-price cs-span-price-right">&yen;20000+</span>
+				<span class="cs-span-price">&yen;500</span>
+				<span class="cs-span-price cs-span-price-right">&yen;5000+</span>
 			</div>
 			<div id="listContent" class="clearfloat"></div>
 		</div>
