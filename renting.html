@@ -10,10 +10,12 @@
 	<link rel="stylesheet" href="https://js.arcgis.com/3.17/esri/css/esri.css">
 	<script src="https://js.arcgis.com/3.17/"></script>
 
+	<link rel="stylesheet" href="css/jquery.range.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 
 	<script src="js/jquery.js"></script>
 	<script src="js/echarts-all.js"></script>
+	<script src="js/jquery.range.js"></script>
 	<script src="js/index.js"></script>
 	<script type="text/javascript">
 		$(function  () {
@@ -64,17 +66,17 @@
 			var rentingObj = {
 			    "宝龙欧洲城": 1700,
 			    "碧桂园·滨海城": 2100,
-			    "和畅园": 1966.66666666667,
+			    "和畅园": 1967,
 			    "红树湾花园": 2880,
-			    "季景园": 2261.53846153846,
+			    "季景园": 2262,
 			    "家和园": 2100,
 			    "锦庐园": 3680,
 			    "景杉园": 2150,
 			    "鲲贝园": 2350,
-			    "鲲玺园": 2233.33333333333,
+			    "鲲玺园": 2233,
 			    "鲲玉园": 2025,
 			    "兰苑": 3200,
-			    "美林园": 2466.66666666667,
+			    "美林园": 2467,
 			    "美韵园": 2200,
 			    "荣馨园": 1200,
 			    "尚苑": 1900,
@@ -82,7 +84,7 @@
 			    "首玺园": 2100,
 			    "天和园": 2200,
 			    "新新家园": 2800,
-			    "雅境园": 1933.33333333333,
+			    "雅境园": 1933,
 			    "悦馨苑": 2300
 			};
 			var rentingHouseArr = ["宝龙欧洲城", "碧桂园·滨海城", "和畅园", "红树湾花园", "季景园", "家和园", "锦庐园", "景杉园", "鲲贝园", "鲲玺园", "鲲玉园", "兰苑", "美林园", "美韵园", "荣馨园", "尚苑", "仕景苑", "首玺园", "天和园", "新新家园", "雅境园", "悦馨苑"];
@@ -96,8 +98,61 @@
 				"imgs/g.jpg",
 				"imgs/h.jpg"
 			];
+			var ruzhulvRate = {
+			    "嘉铭": 78,
+			    "世茂": 100,
+			    "吉宝": 99,
+			    "建投": 98,
+			    "天房": 97,
+			    "万通": 96,
+			    "生井": 95,
+			    "万科": 94,
+			    "远雄": 93,
+			    "投资": 92,
+			    "阿亚拉": 88,
+			    "美利丰": 86,
+			    "生星": 80,
+			    "双威": 79,
+			    "生态投资": 76,
+			    "航天": 75,
+			    "众美": 70,
+			    "富龙": 68,
+			    "亿利": 66,
+			    "富士": 65,
+			    "碧桂园": 60,
+			    "新苑投资": 59,
+			    "力高": 55,
+			    "宝龙": 50
+			};
+			var xiaoshoulvRate = {
+			    "嘉铭": 78,
+			    "世茂": 100,
+			    "吉宝": 99,
+			    "建投": 98,
+			    "天房": 97,
+			    "万通": 96,
+			    "生井": 95,
+			    "万科": 94,
+			    "远雄": 93,
+			    "投资": 92,
+			    "阿亚拉": 88,
+			    "美利丰": 86,
+			    "生星": 80,
+			    "双威": 79,
+			    "生态投资": 76,
+			    "航天": 75,
+			    "众美": 70,
+			    "富龙": 68,
+			    "亿利": 66,
+			    "富士": 65,
+			    "碧桂园": 60,
+			    "新苑投资": 59,
+			    "力高": 55,
+			    "宝龙": 50
+			};
 			var graphicFeaturesArr;
 			var parkgraphicsLayer;
+
 
 			require([
 			"esri/map","esri/symbols/PictureFillSymbol", "esri/Color", "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleMarkerSymbol", "esri/tasks/QueryTask","esri/tasks/query","esri/layers/GraphicsLayer","esri/graphicsUtils","esri/symbols/PictureMarkerSymbol","esri/graphic", "esri/layers/FeatureLayer", "esri/layers/ArcGISTiledMapServiceLayer", "esri/geometry/Extent", "esri/layers/ArcGISImageServiceLayer",
@@ -336,6 +391,122 @@
 			    }
 			});
 
+			// var rangeBoxWidth = Math.round($("#filterBox").width()*0.82);
+
+			setTimeout(function(){
+				var minRentVal = Math.min.apply(null, getObjectValues(rentingObj));
+				var maxRentVal = Math.max.apply(null, getObjectValues(rentingObj));
+				$("#id-span-price-min span").html(minRentVal);
+    			$("#id-span-price-max span").html(maxRentVal);
+
+    			$('.ruzhulv-range-slider').jRange({
+				    from: 0,
+				    to: 100,
+				    step: 1,
+				    format: '%s',
+				    // width:300,
+				    width: Math.round($(".cs-more-filter").width()*0.6),
+				    showLabels: true,
+				    showScale: false,
+				    isRange : true,
+				    onstatechange: function () {
+				    	
+				    },
+				    ondragend: function () {
+				    	
+				    }
+				});
+
+				$('.xiaoshoulv-range-slider').jRange({
+				    from: 0,
+				    to: 100,
+				    step: 1,
+				    format: '%s',
+				    // width:300,
+				    width: Math.round($(".cs-more-filter").width()*0.6),
+				    showLabels: true,
+				    showScale: false,
+				    isRange : true,
+				    onstatechange: function () {
+				    	
+				    },
+				    ondragend: function () {
+				    	
+				    }
+				});
+
+				
+
+				$('.range-slider').jRange({
+				    from: 0,
+				    to: maxRentVal - minRentVal,
+				    step: 1,
+				    format: '%s',
+				    // width:300,
+				    width: Math.round($(".rangeBox").width()),
+				    showLabels: false,
+				    showScale: false,
+				    isRange : true,
+				    // theme : 'theme-green',
+				    onstatechange: function () {
+				    	var valArr = $(".range-slider").val().split(',');
+				    	if(typeof valArr[0] != 'undefined' && typeof valArr[1] != 'undefined' ){
+				    		if(valArr[0] != 0){
+				    			$("#id-span-price-min span").html(parseInt(valArr[0]) + minRentVal);
+				    			$("#id-span-price-max span").html(parseInt(valArr[1]) + minRentVal);
+				    		}else if(valArr[0] == 0){
+				    			$("#id-span-price-min span").html(minRentVal);
+				    		}
+
+				    	}
+				    	console.log($(".range-slider").val());
+				    },
+				    ondragend: function () {
+				    	var minVal = $("#id-span-price-min span").text();
+				    	var maxVal = $("#id-span-price-max span").text();
+				    	if(typeof minVal != 'undefined' && typeof maxVal != 'undefined' ){
+				    		minVal = parseInt(minVal);
+				    		maxVal = parseInt(maxVal.split('+')[0]);
+				    		queryMap(getAmongPriceHouse(minVal, maxVal), genSize, [0, 255, 0, 0.9]);
+				    	}
+				    	console.log(minVal);
+				    	console.log(maxVal);
+
+				    	// console.log($(".range-slider").val());
+				    }
+				});
+			}, 0);
+
+			function getAmongPriceHouse(minVal, maxVal) {
+				// var queryCondition = "DM in ('宝龙欧洲城', '碧桂园·滨海城', '和畅园', '红树湾花园', '季景园', '家和园', '锦庐园', '景杉园', '鲲贝园', '鲲玺园', '鲲玉园', '兰苑', '美林园', '美韵园', '荣馨园', '尚苑', '仕景苑', '首玺园', '天和园', '新新家园', '雅境园', '悦馨苑')";
+				var queryStr = "DM in (";
+				for (rent in rentingObj){
+					if(rentingObj[rent] >= minVal && rentingObj[rent] <= maxVal){
+						queryStr += "'";
+						queryStr += rent;
+						queryStr += "'";
+						queryStr += ",";
+					}
+				}
+				if(queryStr.indexOf(",") >= 0){
+					queryStr = queryStr.substring(0,queryStr.length - 1);
+				}else {
+					queryStr += "''";
+				}
+
+				queryStr += ")";
+				console.log(queryStr);
+				return queryStr;
+			}
+
+			function getObjectValues(obj) {
+				var values = [];
+				for(var pro in obj){
+					values.push(obj[pro]);
+				}
+				return values;
+			}
+
 			function genCircleSymbol (size, color) {
 				return new SimpleMarkerSymbol(
 		          SimpleMarkerSymbol.STYLE_CIRCLE,
@@ -360,14 +531,64 @@
 	</div>
 	<div id="content">
 		<div id="listContentBox" >
+			<div class="cs-kfs-box clearfloat">
+				<h3 class="filter-h3">筛选条件</h3>
+				<div class="cs-more-filter">
+					<label for="input-ruzhulv">入住率(%)</label>
+					<div class="more-filter-range-box">
+						<input type="hidden" class="ruzhulv-range-slider" value="100" />
+					</div>
+				</div>
+				<div class="cs-more-filter">
+					<label for="input-xiaoshoulv">销售率(%)</label>
+					<div class="more-filter-range-box">
+						<input type="hidden" class="xiaoshoulv-range-slider" value="100" />
+					</div>
+				</div>
+				<div class="cs-more-filter">
+					<label for="input-kfs">开发商</label>
+					<div class="cs-ui-select">
+				        <span>全部</span>
+				        <select name="input-kfs" id="id-input-kfs">
+							<option>全部</option>
+							<option>嘉铭</option>
+							<option>世茂</option>
+							<option>吉宝</option>
+							<option>建投</option>
+							<option>天房</option>
+							<option>万通</option>
+							<option>生井</option>
+							<option>万科</option>
+							<option>远雄</option>
+							<option>投资</option>
+							<option>阿亚拉</option>
+							<option>美利丰</option>
+							<option>生星</option>
+							<option>双威</option>
+							<option>生态投资</option>
+							<option>航天</option>
+							<option>众美</option>
+							<option>富龙</option>
+							<option>亿利</option>
+							<option>富士</option>
+							<option>碧桂园</option>
+							<option>新苑投资</option>
+							<option>力高</option>
+							<option>宝龙</option>
+						</select>
+				    </div>
+				</div>
+			</div>
+			<hr>
 			<div id="filterBox">
 				<div id="chart4"></div>
-				<div id="rangeProcess"></div>
-				<div id="rangeLeft"></div>
-				<div id="rangeRight"></div>
-				<span class="cs-span-price">&yen;500</span>
-				<span class="cs-span-price cs-span-price-right">&yen;5000+</span>
+				<div class="rangeBox">
+					<input type="hidden" class="range-slider" value="10000" />
+				</div>
+				<span class="cs-span-price" id="id-span-price-min">&yen;<span>500</span></span>
+				<span class="cs-span-price cs-span-price-right" id="id-span-price-max">&yen;<span>5000+</span></span>
 			</div>
+			<hr>
 			<div id="listContent" class="clearfloat"></div>
 		</div>
 		<div id="detailContent" class="clearfloat"></div>
@@ -375,26 +596,26 @@
 </body>
 </html>
 <!-- <div id="returnBtn">
-				<div class="cs-returnBtn">返回</div>
-		</div>
-		<table class="cs-detail-table" cellspacing="0">
-			<tr>
-				<td>小区名称</td>
-				<td>开发商</td>
-				<td>上市套数</td>
-				<td>成交套数</td>
-				<td>平均价格</td>
-				<td>入住率</td>
-			</tr>
-			<tr>
-				<td>和畅园</td>
-				<td>投资</td>
-				<td>1000</td>
-				<td>1000</td>
-				<td>8000</td>
-				<td>90%</td>
-			</tr>
-		</table>
-		<div id="chart1"></div>
-		<div id="chart2"></div>
-		<div id="chart3"></div> -->
+		<div class="cs-returnBtn">返回</div>
+</div>
+<table class="cs-detail-table" cellspacing="0">
+	<tr>
+		<td>小区名称</td>
+		<td>开发商</td>
+		<td>上市套数</td>
+		<td>成交套数</td>
+		<td>平均价格</td>
+		<td>入住率</td>
+	</tr>
+	<tr>
+		<td>和畅园</td>
+		<td>投资</td>
+		<td>1000</td>
+		<td>1000</td>
+		<td>8000</td>
+		<td>90%</td>
+	</tr>
+</table>
+<div id="chart1"></div>
+<div id="chart2"></div>
+<div id="chart3"></div> -->

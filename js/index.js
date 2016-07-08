@@ -10,7 +10,7 @@ function chart4() {
 		title : {
 	        text: '价格范围',
 	        x: 'center',
-	        y: 30
+	        y: 10
 	    },
 	    xAxis : [
 	        {
