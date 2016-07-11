@@ -522,22 +522,6 @@
 				}else {
 					alert("未找到您搜索的内容！");
 				}
-				// 
-				// $("#id-input-kfs").val(val1);
-				// var queryCondition101 = "DM='"+val1+"' or KFS='"+val1+"'";
-				// var genColor = [255, 0, 0, 0.9];
-				// var genSize = 16;
-				// $("#detailContent").css({
-				// 	display:"none"
-				// });
-				// $('#listContentBox').css({
-				// 	display:"block"
-				// });
-				// if(val1 == ''){
-				// 	queryMap(queryCondition, genSize, genColor);
-				// }else {
-				// 	queryMap(queryCondition101, genSize, genColor);
-				// }
 			});
 			$('#sole-input').on('keypress',function(event){
 			    if(event.keyCode == "13") {
@@ -575,7 +559,7 @@
 
     			$('.ruzhulv-range-slider').jRange({
 				    from: 0,
-				    to: maxruzhulvRate - minruzhulvRate,
+				    to: 100,
 				    step: 1,
 				    format: '%s',
 				    // width:300,
@@ -586,8 +570,8 @@
 				    onstatechange: function () {
 				    	var valArr = $(".ruzhulv-range-slider").val().split(',');
 				    	if(typeof valArr[0] != 'undefined' && typeof valArr[1] != 'undefined' ){
-				    		queryObject["ruzhulv"][0] = parseInt(valArr[0]) + minruzhulvRate;
-				    		queryObject["ruzhulv"][1] = parseInt(valArr[1]) + minruzhulvRate;
+				    		queryObject["ruzhulv"][0] = valArr[0];
+				    		queryObject["ruzhulv"][1] = valArr[1];
 				    	}
 				    },
 				    ondragend: function () {
@@ -597,7 +581,7 @@
 
 				$('.xiaoshoulv-range-slider').jRange({
 				    from: 0,
-				    to: maxxiaoshoulvRate - minxiaoshoulvRate,
+				    to: 100,
 				    step: 1,
 				    format: '%s',
 				    // width:300,
@@ -608,14 +592,58 @@
 				    onstatechange: function () {
 				    	var valArr = $(".xiaoshoulv-range-slider").val().split(',');
 				    	if(typeof valArr[0] != 'undefined' && typeof valArr[1] != 'undefined' ){
-				    		queryObject["xiaoshoulv"][0] = parseInt(valArr[0]) + minxiaoshoulvRate;
-				    		queryObject["xiaoshoulv"][1] = parseInt(valArr[1]) + minxiaoshoulvRate;
+				    		queryObject["xiaoshoulv"][0] = valArr[0];
+				    		queryObject["xiaoshoulv"][1] = valArr[1];
 				    	}
 				    },
 				    ondragend: function () {
 				    	queryMap(getAmongPriceHouse(queryObject), genSize, [0, 255, 0, 0.9]);
 				    }
 				});
+
+    // 			$('.ruzhulv-range-slider').jRange({
+				//     from: 0,
+				//     to: maxruzhulvRate - minruzhulvRate,
+				//     step: 1,
+				//     format: '%s',
+				//     // width:300,
+				//     width: Math.round($(".cs-more-filter").width()*0.6),
+				//     showLabels: true,
+				//     showScale: false,
+				//     isRange : true,
+				//     onstatechange: function () {
+				//     	var valArr = $(".ruzhulv-range-slider").val().split(',');
+				//     	if(typeof valArr[0] != 'undefined' && typeof valArr[1] != 'undefined' ){
+				//     		queryObject["ruzhulv"][0] = parseInt(valArr[0]) + minruzhulvRate;
+				//     		queryObject["ruzhulv"][1] = parseInt(valArr[1]) + minruzhulvRate;
+				//     	}
+				//     },
+				//     ondragend: function () {
+				//     	queryMap(getAmongPriceHouse(queryObject), genSize, [0, 255, 0, 0.9]);
+				//     }
+				// });
+
+				// $('.xiaoshoulv-range-slider').jRange({
+				//     from: 0,
+				//     to: maxxiaoshoulvRate - minxiaoshoulvRate,
+				//     step: 1,
+				//     format: '%s',
+				//     // width:300,
+				//     width: Math.round($(".cs-more-filter").width()*0.6),
+				//     showLabels: true,
+				//     showScale: false,
+				//     isRange : true,
+				//     onstatechange: function () {
+				//     	var valArr = $(".xiaoshoulv-range-slider").val().split(',');
+				//     	if(typeof valArr[0] != 'undefined' && typeof valArr[1] != 'undefined' ){
+				//     		queryObject["xiaoshoulv"][0] = parseInt(valArr[0]) + minxiaoshoulvRate;
+				//     		queryObject["xiaoshoulv"][1] = parseInt(valArr[1]) + minxiaoshoulvRate;
+				//     	}
+				//     },
+				//     ondragend: function () {
+				//     	queryMap(getAmongPriceHouse(queryObject), genSize, [0, 255, 0, 0.9]);
+				//     }
+				// });
 
 
 
