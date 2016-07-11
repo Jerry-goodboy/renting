@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>plugin</title>
+	<script src="js/jquery.js"></script>
+</head>
+<body>
+	<div class="hilight">lalala</div>
+	<!-- <div class="hilight">lalala</div>
+	<div class="hilight">lalala</div> -->
+	<script>
+	$(function () {
+		$('.hilight').hilight();
+	});
+	// create a closure
+	(function ($) {
+		// define plugin
+		$.fn.hilight = function (options) {
+			debug(this);
+			// build main options before element iteration
+			var opts = $.extend({}, $.fn.hilight.defaults, options);
+			// iterate and reformat each matched element
+			return this.each(function () {
+				$this = $(this);
+				// build element specific options
+				var o = $.meta?$.extend({}, opts, $this.data()):opts;
+				// update element styles
+				$this.css({
+					background: o.background,
+					color: o.foreground
+				});
+				var markup = $this.html();
+				// call our format function
+				markup = $.fn.hilight.format(markup);
+				$this.html(markup);
+			});
+		};
+		// private function
+		function debug($obj) {
+			if(window.console && window.console.log){
+				window.console.log("hilight selection count:" + $obj.size());
+			}
+		}
+		// define export format function
+		$.fn.hilight.format = function (txt) {
+			return '<i>' + txt + '</i>';
+		};
+		// defaults options of plugin
+		$.fn.hilight.defaults = {
+			background:'yellow',
+			foreground:'red'
+		};
+		// closure end
+	})(jQuery);
+
+	// (function ($) {
+	// 	$.fool = function (a) {
+	// 		console.log(a);
+	// 	};
+	// 	$.fool(3);
+
+	// 	$.extend({
+	// 		fool1: function (b) {
+	// 			console.log(b);
+	// 		},
+	// 		fool2: function (c) {
+	// 			console.log(c);
+	// 		}
+	// 	});
+	// 	$.fool1(1);
+	// 	$.fool2(2);
+
+	// 	$.myPlugin = {
+	// 		fool3: function (d) {
+	// 			return d + 5;
+	// 		}
+	// 		,
+	// 		fool4: function (e) {
+	// 			console.log(e);
+	// 		},
+	// 		fool5: function (e) {
+	// 			var f = this.fool3(e);
+	// 			console.log(f);
+	// 		}
+	// 	};
+	// 	$.myPlugin.fool4($.myPlugin.fool3(5));
+	// 	$.myPlugin.fool5(10);
+
+
+	// })(jQuery);
+	</script>
+</body>
+</html>
