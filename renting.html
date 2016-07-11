@@ -70,7 +70,7 @@
 			    "红树湾花园": 2880,
 			    "季景园": 2262,
 			    "家和园": 2100,
-			    "锦庐园": 3680,
+			    "锦庐园": 3700,
 			    "景杉园": 2150,
 			    "鲲贝园": 2350,
 			    "鲲玺园": 2233,
@@ -288,6 +288,35 @@
 			Map,PictureFillSymbol, Color, SimpleLineSymbol, SimpleMarkerSymbol, QueryTask, Query,GraphicsLayer,graphicsUtils,PictureMarkerSymbol,Graphic, FeatureLayer, ArcGISTiledMapServiceLayer, Extent, ArcGISImageServiceLayer,
 			ImageServiceParameters, parser
 			) {
+				var minRent = Math.min.apply(null, getObjectValues(rentingObj));
+				var maxRent = Math.max.apply(null, getObjectValues(rentingObj));
+				var diffRentVal = Math.floor((maxRent - minRent)/50);
+
+				function generateChartData() {
+					window.seriesDataArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+					for(rent in rentingObj){
+						var inx = Math.floor((rentingObj[rent] - minRent)/diffRentVal);
+						if(inx >= window.seriesDataArr.length){
+							inx = window.seriesDataArr.length - 1;
+						}
+						window.seriesDataArr[inx]++;
+					}
+				}
+				function changeChartBarColor(rentArr) {
+					window.chartBarColorInx = [];
+					for(var kk=0; kk<rentArr.length; kk++){
+						var inx = Math.floor((rentingObj[rentArr[kk]] - minRent)/diffRentVal);
+						if(inx >= window.seriesDataArr.length){
+							inx = window.seriesDataArr.length - 1;
+						}
+						window.chartBarColorInx.push(inx);
+						console.log(inx);
+					}
+					console.log(window.chartBarColorInx);
+				}
+				generateChartData();
+				// changeChartBarColor(window.chartDataHouseArr)
 				chart4();
 				var ext = new Extent({
 					xmin:117.59786569023996,
@@ -342,12 +371,15 @@
 						if(results.features.length == 0) {
 							alert("你所输入的信息可能有误，系统无法为您查询到结果，请核对后输入！");
 						}
+						window.chartDataHouseArr = [];
 				    	for (var i=0;i<results.features.length; i++)
 						{
 							var graphic=results.features[i];
 
 							var mc = results.features[i]["attributes"]["DM"];
 							var kfs = results.features[i]["attributes"]["KFS"];
+
+							window.chartDataHouseArr.push(mc);
 
 							kfsObj[mc] = kfs;
 
@@ -366,6 +398,8 @@
 							html += '<div class="cs-img-mask" data-housename="'+mc+'"></div></div>';
 						}
 						$("#listContent").append(html);
+						changeChartBarColor(window.chartDataHouseArr);
+						chart4();
 
 					},function(){
 						alert("查询错误");
