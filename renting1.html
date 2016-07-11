@@ -146,46 +146,6 @@
 			    "雅境园": 100,
 			    "悦馨苑": 76
 			};
-			var kfsEstateObj = {
-			    "鲲玺园": "世茂",
-			    "美林园": "建投",
-			    "锦庐园": "万科",
-			    "红树湾花园": "嘉铭",
-			    "景杉园": "生井",
-			    "鲲玉园": "世茂",
-			    "首玺园": "生星",
-			    "家和园": "生态投资",
-			    "荣馨园": "美利丰",
-			    "新新家园": "万通",
-			    "美韵园": "建投",
-			    "雅境园": "阿亚拉",
-			    "兰苑": "远雄",
-			    "仕景苑": "嘉铭",
-			    "鲲贝园": "世茂",
-			    "美逸园": "建投",
-			    "碧桂园·滨海城": "碧桂园",
-			    "力高·阳光海岸": "力高",
-			    "季景园": "吉宝",
-			    "青溪花苑": "众美",
-			    "宝龙欧洲城": "宝龙",
-			    "南苑": "建投",
-			    "和畅园": "投资",
-			    "尚苑": "世茂",
-			    "璟苑": "世茂",
-			    "天和园": "天房",
-			    "美锦园": "建投",
-			    "雅馨园": "航天",
-			    "新颐园": "万通",
-			    "悦馨苑": "双威",
-			    "依水园": "生态投资",
-			    "澜水苑": "富龙",
-			    "兰景园": "吉宝",
-			    "香堤苑": "建投",
-			    "慧水苑": "建投",
-			    "芦花庄园": "富士",
-			    "颐湖居": "亿利",
-			    "煦园": "新苑投资"
-			};
 			// var ruzhulvRate = {
 			//     "鲲玺园": 43.39,
 			//     "美林园": 78.82,
@@ -495,49 +455,22 @@
 					display:"block"
 				});
 			});
-
-			$("#id-input-kfs").on("click", function (e) {
-
-				$("#sole-input").val('');
-			});
-			var estateCreatorArr = [];
-
 			$("#search-button").click(function () {
-				var val1 = $("#sole-input").val();
-				var objArr = Object.keys(kfsEstateObj);
-				console.log(objArr);
-
-				$("#id-input-kfs option").each(function(){
-					$this = $(this);
-					estateCreatorArr.push($this.html());
+				var val = $("#sole-input").val();
+				var queryCondition101 = "DM='"+val+"' or KFS='"+val+"'";
+				var genColor = [255, 0, 0, 0.9];
+				var genSize = 16;
+				$("#detailContent").css({
+					display:"none"
 				});
-				if(estateCreatorArr.indexOf(val1) >=0 ){
-					$("#id-input-kfs").val(val1);
-					$("#id-input-kfs").trigger("change");
-					console.log(33);
-				}else if(objArr.indexOf(val1)  >=0 ){
-					$("#id-input-kfs").val(kfsEstateObj[val1]);
-					$("#id-input-kfs").trigger("change");
-					console.log(55);
+				$('#listContentBox').css({
+					display:"block"
+				});
+				if(val == ''){
+					queryMap(queryCondition, genSize, genColor);
 				}else {
-					alert("未找到您搜索的内容！");
+					queryMap(queryCondition101, genSize, genColor);
 				}
-				// 
-				// $("#id-input-kfs").val(val1);
-				// var queryCondition101 = "DM='"+val1+"' or KFS='"+val1+"'";
-				// var genColor = [255, 0, 0, 0.9];
-				// var genSize = 16;
-				// $("#detailContent").css({
-				// 	display:"none"
-				// });
-				// $('#listContentBox').css({
-				// 	display:"block"
-				// });
-				// if(val1 == ''){
-				// 	queryMap(queryCondition, genSize, genColor);
-				// }else {
-				// 	queryMap(queryCondition101, genSize, genColor);
-				// }
 			});
 			$('#sole-input').on('keypress',function(event){
 			    if(event.keyCode == "13") {
@@ -610,6 +543,7 @@
 				    	if(typeof valArr[0] != 'undefined' && typeof valArr[1] != 'undefined' ){
 				    		queryObject["xiaoshoulv"][0] = parseInt(valArr[0]) + minxiaoshoulvRate;
 				    		queryObject["xiaoshoulv"][1] = parseInt(valArr[1]) + minxiaoshoulvRate;
+				    		// $(".pointer-label.low").text(queryObject["xiaoshoulv"][0]);
 				    	}
 				    },
 				    ondragend: function () {
