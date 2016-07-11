@@ -1,0 +1,883 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+
+	<title>estate</title>
+
+	<link rel="stylesheet" href="https://js.arcgis.com/3.17/esri/css/esri.css">
+	<script src="https://js.arcgis.com/3.17/"></script>
+
+	<link rel="stylesheet" href="css/jquery.range.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+
+	<script src="js/jquery.js"></script>
+	<script src="js/echarts-all.js"></script>
+	<script src="js/jquery.range.js"></script>
+	<script src="js/index.js"></script>
+	<script type="text/javascript">
+		$(function  () {
+			basemap = "http://221.238.40.122:8399/arcgis/rest/services/FJYXFW/MapServer";
+			querymap = 'http://221.238.40.122:8399/arcgis/rest/services/FJXX/MapServer/0';
+			ecomap = "http://221.238.40.122:8399/arcgis/rest/services/SQEcoMap/MapServer";
+			var kfsObj = {};
+			var avgPrice = {
+			    "和畅园": 7300,
+			    "鲲玺园": 8000,
+			    "荣馨园": 8300,
+			    "红树湾花园": 8500,
+			    "兰苑": 8900,
+			    "美林园": 9000,
+			    "悦馨苑": 9000,
+			    "鲲贝园": 9200,
+			    "雅境园": 9200,
+			    "首玺园": 9500,
+			    "季景园": 9850,
+			    "天和园": 10000,
+			    "鲲玉园": 10000,
+			    "家和园": 10000,
+			    "美韵园": 10000,
+			    "景杉园": 10300,
+			    "锦庐园": 11000,
+			    "尚苑": 11000,
+			    "新新家园": 11000,
+			    "璟苑": 11000,
+			    "兰景园": 12500,
+			    "芦花庄园": 14000,
+			    "南苑": 14500,
+			    "新颐园": 16500,
+			    "依水园": 16500,
+			    "澜水苑": 17500,
+			    "香堤苑": 21500,
+			    "建设公寓": 9000,
+			    "世茂生态城": 9000,
+			    "金航湾": 9000,
+			    "蓝领公寓": 9000,
+			    "宝龙欧洲城": 9000,
+			    "碧桂园·滨海城": 9000,
+			    "力高·阳光海岸": 9000,
+			    "芙蓉北苑": 9000,
+			    "芙蓉南苑": 9000,
+			    "首创康桥郡": 9000,
+			    "煦园": 9000
+			};
+			var rentingObj = {
+			    "宝龙欧洲城": 1700,
+			    "碧桂园·滨海城": 2100,
+			    "和畅园": 1967,
+			    "红树湾花园": 2880,
+			    "季景园": 2262,
+			    "家和园": 2100,
+			    "锦庐园": 3680,
+			    "景杉园": 2150,
+			    "鲲贝园": 2350,
+			    "鲲玺园": 2233,
+			    "鲲玉园": 2025,
+			    "兰苑": 3200,
+			    "美林园": 2467,
+			    "美韵园": 2200,
+			    "荣馨园": 1200,
+			    "尚苑": 1900,
+			    "仕景苑": 2300,
+			    "首玺园": 2100,
+			    "天和园": 2200,
+			    "新新家园": 2800,
+			    "雅境园": 1933,
+			    "悦馨苑": 2300
+			};
+			var rentingHouseArr = ["宝龙欧洲城", "碧桂园·滨海城", "和畅园", "红树湾花园", "季景园", "家和园", "锦庐园", "景杉园", "鲲贝园", "鲲玺园", "鲲玉园", "兰苑", "美林园", "美韵园", "荣馨园", "尚苑", "仕景苑", "首玺园", "天和园", "新新家园", "雅境园", "悦馨苑"];
+			var imgArr = [
+				"imgs/a.jpg",
+				"imgs/b.jpg",
+				"imgs/c.jpg",
+				"imgs/d.jpg",
+				"imgs/e.jpg",
+				"imgs/f.jpg",
+				"imgs/g.jpg",
+				"imgs/h.jpg"
+			];
+			var ruzhulvRate = {
+				"宝龙欧洲城":1 ,
+				"碧桂园·滨海城":32 ,
+				"和畅园":86 ,
+				"红树湾花园":80 ,
+				"季景园":68 ,
+				"家和园":0 ,
+				"锦庐园":64 ,
+				"景杉园":88 ,
+				"鲲贝园":79 ,
+				"鲲玺园":43 ,
+				"鲲玉园":88 ,
+				"兰苑":58 ,
+				"美林园":79 ,
+				"美韵园":12 ,
+				"荣馨园":77 ,
+				"尚苑":23 ,
+				"仕景苑":58 ,
+				"首玺园":63 ,
+				"天和园":72 ,
+				"新新家园":83 ,
+				"雅境园":49 ,
+				"悦馨苑":17
+			};
+			var xiaoshoulvRate = {
+			    "宝龙欧洲城": 96,
+			    "碧桂园·滨海城": 99,
+			    "和畅园": 95,
+			    "红树湾花园": 100,
+			    "季景园": 97,
+			    "家和园": 100,
+			    "锦庐园": 100,
+			    "景杉园": 100,
+			    "鲲贝园": 99,
+			    "鲲玺园": 100,
+			    "鲲玉园": 100,
+			    "兰苑": 100,
+			    "美林园": 100,
+			    "美韵园": 100,
+			    "荣馨园": 100,
+			    "尚苑": 94,
+			    "仕景苑": 99,
+			    "首玺园": 100,
+			    "天和园": 92,
+			    "新新家园": 100,
+			    "雅境园": 100,
+			    "悦馨苑": 76
+			};
+			var kfsEstateObj = {
+			    "鲲玺园": "世茂",
+			    "美林园": "建投",
+			    "锦庐园": "万科",
+			    "红树湾花园": "嘉铭",
+			    "景杉园": "生井",
+			    "鲲玉园": "世茂",
+			    "首玺园": "生星",
+			    "家和园": "生态投资",
+			    "荣馨园": "美利丰",
+			    "新新家园": "万通",
+			    "美韵园": "建投",
+			    "雅境园": "阿亚拉",
+			    "兰苑": "远雄",
+			    "仕景苑": "嘉铭",
+			    "鲲贝园": "世茂",
+			    "美逸园": "建投",
+			    "碧桂园·滨海城": "碧桂园",
+			    "力高·阳光海岸": "力高",
+			    "季景园": "吉宝",
+			    "青溪花苑": "众美",
+			    "宝龙欧洲城": "宝龙",
+			    "南苑": "建投",
+			    "和畅园": "投资",
+			    "尚苑": "世茂",
+			    "璟苑": "世茂",
+			    "天和园": "天房",
+			    "美锦园": "建投",
+			    "雅馨园": "航天",
+			    "新颐园": "万通",
+			    "悦馨苑": "双威",
+			    "依水园": "生态投资",
+			    "澜水苑": "富龙",
+			    "兰景园": "吉宝",
+			    "香堤苑": "建投",
+			    "慧水苑": "建投",
+			    "芦花庄园": "富士",
+			    "颐湖居": "亿利",
+			    "煦园": "新苑投资"
+			};
+			// var ruzhulvRate = {
+			//     "鲲玺园": 43.39,
+			//     "美林园": 78.82,
+			//     "锦庐园": 64.11,
+			//     "红树湾花园": 80.15,
+			//     "景杉园": 88.44,
+			//     "鲲玉园": 87.88,
+			//     "首玺园": 62.52,
+			//     "家和园": 0,
+			//     "荣馨园": 76.73,
+			//     "新新家园": 82.96,
+			//     "美韵园": 12.05,
+			//     "雅境园": 48.62,
+			//     "兰苑": 57.92,
+			//     "仕景苑": 58.01,
+			//     "鲲贝园": 79,
+			//     "美逸园": 0,
+			//     "碧桂园·滨海城": 32.29,
+			//     "力高·阳光海岸": 0,
+			//     "季景园": 68,
+			//     "青溪花苑": 0,
+			//     "宝龙欧洲城": 0.52,
+			//     "南苑": 61.24,
+			//     "和畅园": 86.09,
+			//     "尚苑": 23.06,
+			//     "璟苑": 0,
+			//     "天和园": 71.94,
+			//     "美锦园": 0,
+			//     "雅馨园": 0,
+			//     "新颐园": 0,
+			//     "悦馨苑": 16.67,
+			//     "依水园": 0,
+			//     "澜水苑": 0,
+			//     "兰景园": 34.76,
+			//     "香堤苑": 0,
+			//     "慧水苑": 0,
+			//     "芦花庄园": 14.31,
+			//     "颐湖居": 0,
+			//     "煦园": 0
+			// };
+
+			// var xiaoshoulvRate = {
+			//     "鲲玺园": 100,
+			//     "美林园": 100,
+			//     "锦庐园": 100,
+			//     "红树湾花园": 100,
+			//     "景杉园": 100,
+			//     "鲲玉园": 100,
+			//     "首玺园": 100,
+			//     "家和园": 100,
+			//     "荣馨园": 100,
+			//     "新新家园": 99.79,
+			//     "美韵园": 99.71,
+			//     "雅境园": 99.59,
+			//     "兰苑": 99.57,
+			//     "仕景苑": 99.44,
+			//     "鲲贝园": 99.31,
+			//     "美逸园": 99.27,
+			//     "碧桂园·滨海城": 99.26,
+			//     "力高·阳光海岸": 90.23,
+			//     "季景园": 97.31,
+			//     "青溪花苑": 95.61,
+			//     "宝龙欧洲城": 95.57,
+			//     "南苑": 95.35,
+			//     "和畅园": 94.57,
+			//     "尚苑": 94.37,
+			//     "璟苑": 92.57,
+			//     "天和园": 92.47,
+			//     "美锦园": 84.85,
+			//     "雅馨园": 80.17,
+			//     "新颐园": 80,
+			//     "悦馨苑": 76.02,
+			//     "依水园": 74.9,
+			//     "澜水苑": 68.29,
+			//     "兰景园": 66.46,
+			//     "香堤苑": 59.32,
+			//     "慧水苑": 52.31,
+			//     "芦花庄园": 29.41,
+			//     "颐湖居": 0,
+			//     "煦园": 0
+			// };
+			var graphicFeaturesArr;
+			var parkgraphicsLayer;
+			var queryObject = {
+				"ruzhulv":[0, 100],
+				"xiaoshoulv":[0, 100],
+				"price":[1200, 3680],
+				"kfs":'all'
+				// ,
+				// "rentingObj":rentingObj,
+				// "ruzhulvRate":ruzhulvRate,
+				// "xiaoshoulvRate":xiaoshoulvRate
+			};
+
+
+			require([
+			"esri/map","esri/symbols/PictureFillSymbol", "esri/Color", "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleMarkerSymbol", "esri/tasks/QueryTask","esri/tasks/query","esri/layers/GraphicsLayer","esri/graphicsUtils","esri/symbols/PictureMarkerSymbol","esri/graphic", "esri/layers/FeatureLayer", "esri/layers/ArcGISTiledMapServiceLayer", "esri/geometry/Extent", "esri/layers/ArcGISImageServiceLayer",
+			"esri/layers/ImageServiceParameters", "dojo/parser", "dojo/domReady!"
+			], function(
+			Map,PictureFillSymbol, Color, SimpleLineSymbol, SimpleMarkerSymbol, QueryTask, Query,GraphicsLayer,graphicsUtils,PictureMarkerSymbol,Graphic, FeatureLayer, ArcGISTiledMapServiceLayer, Extent, ArcGISImageServiceLayer,
+			ImageServiceParameters, parser
+			) {
+				chart4();
+				var ext = new Extent({
+					xmin:117.59786569023996,
+					ymin:39.06854167659476,
+					xmax:117.82629394679967,
+					ymax:39.19382029855173
+				});
+
+				map = new Map("ecomap",{
+						  nav:false,//8个pan 箭头
+						  slider:false,//左上的缩放 +/-;
+						  logo:false,//右下的esri logo
+						  showAttribution:false,//右下的gisNeu (logo左侧)
+						  extent: ext
+						});
+				var ecomap = new ArcGISTiledMapServiceLayer(basemap);
+				map.addLayer(ecomap);
+
+				genColor = [255, 0, 0, 0.9];
+				genSize = 16;
+
+				var estateArr = ['和畅园','美林园','天和园','芦花庄园','锦庐园','南苑','兰苑','荣馨园','首玺园','尚苑','建设公寓','世茂生态城','金航湾','蓝领公寓','宝龙欧洲城','碧桂园•滨海城','力高•阳光海岸','新新家园','季景园','鲲玉园','鲲贝园','景杉园','香堤苑','鲲玺园','红树湾花园','芙蓉北苑','雅境园','芙蓉南苑','家和园','悦馨苑','兰景园','美韵园','璟苑','新颐园','依水园','首创康桥郡','澜水苑','煦园',"颐湖居","慧水苑","雅馨园"];
+
+				var queryCondition = "DM in ('宝龙欧洲城', '碧桂园·滨海城', '和畅园', '红树湾花园', '季景园', '家和园', '锦庐园', '景杉园', '鲲贝园', '鲲玺园', '鲲玉园', '兰苑', '美林园', '美韵园', '荣馨园', '尚苑', '仕景苑', '首玺园', '天和园', '新新家园', '雅境园', '悦馨苑')";
+
+				// var queryCondition = "DM in ('和畅园','颐湖居','慧水苑','雅馨园','美林园','天和园','芦花庄园','锦庐园','南苑','兰苑','荣馨园','首玺园','尚苑','建设公寓','世茂生态城','金航湾','蓝领公寓','宝龙欧洲城','碧桂园•滨海城','力高•阳光海岸','新新家园','季景园','鲲玉园','鲲贝园','景杉园','香堤苑','鲲玺园','红树湾花园','芙蓉北苑','雅境园','芙蓉南苑','家和园','悦馨苑','兰景园','美韵园','璟苑','新颐园','依水园','首创康桥郡','澜水苑','煦园')";
+
+				// var queryCondition = "KFS='宝龙'"
+
+				queryMap(queryCondition, genSize, genColor);
+
+				function queryMap(queryCondition, genSize, genColor ) {
+					if(typeof parkgraphicsLayer != "undefined"){
+						map.removeLayer(parkgraphicsLayer);
+					}
+
+					var qt = new QueryTask(querymap);
+					var query = new Query();
+					query.returnGeometry = true;
+					query.outFields = ["*"];
+					//query.outSpatialReference = map.spatialReference;
+					query.where = queryCondition;
+
+					parkgraphicsLayer = new GraphicsLayer();
+
+					qt.execute(query,function(results){
+						var parkgraphicsAry = results.features;
+						graphicFeaturesArr = results.features;
+						var html = '';
+						$("#listContent").empty();
+						kfsObj = {};
+						if(results.features.length == 0) {
+							alert("你所输入的信息可能有误，系统无法为您查询到结果，请核对后输入！");
+						}
+				    	for (var i=0;i<results.features.length; i++)
+						{
+							var graphic=results.features[i];
+
+							var mc = results.features[i]["attributes"]["DM"];
+							var kfs = results.features[i]["attributes"]["KFS"];
+
+							kfsObj[mc] = kfs;
+
+							if(rentingHouseArr.indexOf(mc) < 0) {
+								graphic.setSymbol(genCircleSymbol(genSize, genColor));
+							}else {
+								graphic.setSymbol(genCircleSymbol(genSize, [0, 255, 0, 0.9]));
+							}
+
+							parkgraphicsLayer.add(graphic);
+
+							html += '<div class="cs-img-block">';
+							html += '<img src="'+ (i<8?imgArr[i]:'imgs/a.jpg') + '" style="max-width:100%">';
+							html += '<h3 class="cs-img-h3">'+ mc +'</h3>';
+							html += '<p class="cs-img-p">&yen;'+(typeof Math.round(rentingObj[mc]) == 'undefined'?'2000':Math.round(rentingObj[mc]))+'</p>';
+							html += '<div class="cs-img-mask" data-housename="'+mc+'"></div></div>';
+						}
+						$("#listContent").append(html);
+
+					},function(){
+						alert("查询错误");
+					});
+
+					map.addLayer(parkgraphicsLayer);
+
+					parkgraphicsLayer.on("click",function (e) {
+						var graphic = e.graphic;
+						var mc = graphic.attributes["DM"];
+						var kfs = graphic.attributes["KFS"];
+
+						for (var i=0;i<graphicFeaturesArr.length; i++)
+						{
+							genColor = [255, 0, 0, 0.9];
+							genSize = 16;
+							var agraphic=graphicFeaturesArr[i];
+
+							if(rentingHouseArr.indexOf(mc) < 0) {
+								agraphic.setSymbol(genCircleSymbol(genSize, genColor));
+							}else {
+								agraphic.setSymbol(genCircleSymbol(genSize, [0, 255, 0, 0.9]));
+							}
+						}
+
+						genColor = [0, 0, 255, 0.9];
+						genSize = 16;
+
+						graphic.setSymbol(genCircleSymbol(genSize, genColor));
+
+						$("#listContentBox").css({
+							display:"none"
+						});
+						$('.cs-img-mask').css({
+						    "background": "transparent",
+						    "border": "0"
+						});
+						$("[data-housename='"+mc+"']").css({
+						    "background": "rgba(0, 0, 0, 0.15)",
+						    "border": "2px solid rgba(0, 204, 204, .5)"
+						});
+						$('#detailContent').empty();
+						$('#detailContent').css({
+							display:"block"
+						});
+						var houseName = mc;
+						var html = '';
+						html += '<div id="returnBtn">';
+						html += '<div class="cs-returnBtn">返回</div></div>';
+						html += '<table class="cs-detail-table" cellspacing="0">';
+						html += '<tr><td>小区名称</td><td>开发商</td><td>上市套数</td><td>成交套数</td><td>平均价格</td><td>入住率</td></tr>';
+						html += '<tr><td>'+houseName+'</td><td>'+kfs+'</td><td>1000</td><td>1000</td>';
+						html += '<td>'+(typeof Math.round(rentingObj[houseName]) == 'undefined'?'2000':Math.round(rentingObj[houseName]))+'</td><td>90%</td></tr></table>';
+						html += '<div id="chart1"></div>';
+						html += '<div id="chart2"></div>';
+						html += '<div id="chart3"></div>';
+
+						$('#detailContent').append(html);
+
+						chart1();
+						chart2();
+						chart3();
+					});
+				}
+
+			$("#listContent").on("click",".cs-img-mask",function(){
+				$("#listContentBox").css({
+					display:"none"
+				});
+				$('#detailContent').empty();
+				$('#detailContent').css({
+					display:"block"
+				});
+				$('.cs-img-mask').css({
+				    "background": "transparent",
+				    "border": "0"
+				});
+				$(this).css({
+				    "background": "rgba(0, 0, 0, 0.15)",
+				    "border": "2px solid rgba(0, 204, 204, .5)"
+				});
+				var houseName = $(this).attr("data-housename");
+				var html = '';
+				html += '<div id="returnBtn">';
+				html += '<div class="cs-returnBtn">返回</div></div>';
+				html += '<table class="cs-detail-table" cellspacing="0">';
+				html += '<tr><td>小区名称</td><td>开发商</td><td>上市套数</td><td>成交套数</td><td>平均价格</td><td>入住率</td></tr>';
+				html += '<tr><td>'+houseName+'</td><td>'+kfsObj[houseName]+'</td><td>1000</td><td>1000</td>';
+				html += '<td>'+(typeof Math.round(rentingObj[houseName]) == 'undefined'?'2000':Math.round(rentingObj[houseName]))+'</td><td>90%</td></tr></table>';
+				html += '<div id="chart1"></div>';
+				html += '<div id="chart2"></div>';
+				html += '<div id="chart3"></div>';
+
+				$('#detailContent').append(html);
+
+				chart1();
+				chart2();
+				chart3();
+
+				for (var i=0;i<graphicFeaturesArr.length; i++)
+				{
+					var agraphic=graphicFeaturesArr[i];
+					var mc = agraphic.attributes["DM"];
+					if(mc == houseName){
+						genColor = [0, 0, 255, 0.9];
+						genSize = 16;
+						agraphic.setSymbol(genCircleSymbol(genSize, genColor));
+					}else {
+						genColor = [255, 0, 0, 0.9];
+						genSize = 16;
+						agraphic.setSymbol(genCircleSymbol(genSize, genColor));
+						if(rentingHouseArr.indexOf(mc) < 0) {
+							agraphic.setSymbol(genCircleSymbol(genSize, genColor));
+						}else {
+							agraphic.setSymbol(genCircleSymbol(genSize, [0, 255, 0, 0.9]));
+						}
+					}
+				}
+
+			});
+
+			$("#detailContent").on("click",".cs-returnBtn",function(){
+				$("#detailContent").css({
+					display:"none"
+				});
+				$('#listContentBox').css({
+					display:"block"
+				});
+			});
+
+			$("#id-input-kfs").on("click", function (e) {
+
+				$("#sole-input").val('');
+			});
+			var estateCreatorArr = [];
+
+			$("#search-button").click(function () {
+				var val1 = $("#sole-input").val();
+				var objArr = Object.keys(kfsEstateObj);
+				console.log(objArr);
+
+				$("#id-input-kfs option").each(function(){
+					$this = $(this);
+					estateCreatorArr.push($this.html());
+				});
+				if(estateCreatorArr.indexOf(val1) >=0 ){
+					$("#id-input-kfs").val(val1);
+					$("#id-input-kfs").trigger("change");
+					console.log(33);
+				}else if(objArr.indexOf(val1)  >=0 ){
+					$("#id-input-kfs").val(kfsEstateObj[val1]);
+					$("#id-input-kfs").trigger("change");
+					console.log(55);
+				}else {
+					alert("未找到您搜索的内容！");
+				}
+			});
+			$('#sole-input').on('keypress',function(event){
+			    if(event.keyCode == "13") {
+			    	$('#search-button').click();
+			    }
+			});
+
+			$("#id-input-kfs").on("change", function  (e) {
+				var kfsVal = $(this).val();
+				$(".cs-ui-select span").text(kfsVal);
+				if(kfsVal == "全部"){
+					queryObject["kfs"] = 'all';
+				}else {
+					queryObject["kfs"] = kfsVal;
+				}
+				console.log(queryObject["kfs"]);
+				queryMap(getAmongPriceHouse(queryObject), genSize, [0, 255, 0, 0.9]);
+
+			});
+
+			// var rangeBoxWidth = Math.round($("#filterBox").width()*0.82);
+
+			setTimeout(function(){
+				var minRentVal = Math.min.apply(null, getObjectValues(rentingObj));
+				var maxRentVal = Math.max.apply(null, getObjectValues(rentingObj));
+
+				var minruzhulvRate = Math.min.apply(null, getObjectValues(ruzhulvRate));
+				var maxruzhulvRate = Math.max.apply(null, getObjectValues(ruzhulvRate));
+
+				var minxiaoshoulvRate = Math.min.apply(null, getObjectValues(xiaoshoulvRate));
+				var maxxiaoshoulvRate = Math.max.apply(null, getObjectValues(xiaoshoulvRate));
+
+				$("#id-span-price-min span").html(minRentVal);
+    			$("#id-span-price-max span").html(maxRentVal);
+
+    			$('.ruzhulv-range-slider').jRange({
+				    from: 0,
+				    to: 100,
+				    step: 1,
+				    format: '%s',
+				    // width:300,
+				    width: Math.round($(".cs-more-filter").width()*0.6),
+				    showLabels: true,
+				    showScale: false,
+				    isRange : true,
+				    onstatechange: function () {
+				    	var valArr = $(".ruzhulv-range-slider").val().split(',');
+				    	if(typeof valArr[0] != 'undefined' && typeof valArr[1] != 'undefined' ){
+				    		queryObject["ruzhulv"][0] = valArr[0];
+				    		queryObject["ruzhulv"][1] = valArr[1];
+				    	}
+				    },
+				    ondragend: function () {
+				    	queryMap(getAmongPriceHouse(queryObject), genSize, [0, 255, 0, 0.9]);
+				    }
+				});
+
+				$('.xiaoshoulv-range-slider').jRange({
+				    from: 0,
+				    to: 100,
+				    step: 1,
+				    format: '%s',
+				    // width:300,
+				    width: Math.round($(".cs-more-filter").width()*0.6),
+				    showLabels: true,
+				    showScale: false,
+				    isRange : true,
+				    onstatechange: function () {
+				    	var valArr = $(".xiaoshoulv-range-slider").val().split(',');
+				    	if(typeof valArr[0] != 'undefined' && typeof valArr[1] != 'undefined' ){
+				    		queryObject["xiaoshoulv"][0] = valArr[0];
+				    		queryObject["xiaoshoulv"][1] = valArr[1];
+				    	}
+				    },
+				    ondragend: function () {
+				    	queryMap(getAmongPriceHouse(queryObject), genSize, [0, 255, 0, 0.9]);
+				    }
+				});
+
+    // 			$('.ruzhulv-range-slider').jRange({
+				//     from: 0,
+				//     to: maxruzhulvRate - minruzhulvRate,
+				//     step: 1,
+				//     format: '%s',
+				//     // width:300,
+				//     width: Math.round($(".cs-more-filter").width()*0.6),
+				//     showLabels: true,
+				//     showScale: false,
+				//     isRange : true,
+				//     onstatechange: function () {
+				//     	var valArr = $(".ruzhulv-range-slider").val().split(',');
+				//     	if(typeof valArr[0] != 'undefined' && typeof valArr[1] != 'undefined' ){
+				//     		queryObject["ruzhulv"][0] = parseInt(valArr[0]) + minruzhulvRate;
+				//     		queryObject["ruzhulv"][1] = parseInt(valArr[1]) + minruzhulvRate;
+				//     	}
+				//     },
+				//     ondragend: function () {
+				//     	queryMap(getAmongPriceHouse(queryObject), genSize, [0, 255, 0, 0.9]);
+				//     }
+				// });
+
+				// $('.xiaoshoulv-range-slider').jRange({
+				//     from: 0,
+				//     to: maxxiaoshoulvRate - minxiaoshoulvRate,
+				//     step: 1,
+				//     format: '%s',
+				//     // width:300,
+				//     width: Math.round($(".cs-more-filter").width()*0.6),
+				//     showLabels: true,
+				//     showScale: false,
+				//     isRange : true,
+				//     onstatechange: function () {
+				//     	var valArr = $(".xiaoshoulv-range-slider").val().split(',');
+				//     	if(typeof valArr[0] != 'undefined' && typeof valArr[1] != 'undefined' ){
+				//     		queryObject["xiaoshoulv"][0] = parseInt(valArr[0]) + minxiaoshoulvRate;
+				//     		queryObject["xiaoshoulv"][1] = parseInt(valArr[1]) + minxiaoshoulvRate;
+				//     	}
+				//     },
+				//     ondragend: function () {
+				//     	queryMap(getAmongPriceHouse(queryObject), genSize, [0, 255, 0, 0.9]);
+				//     }
+				// });
+
+
+
+				$('.range-slider').jRange({
+				    from: 0,
+				    to: maxRentVal - minRentVal,
+				    step: 1,
+				    format: '%s',
+				    // width:300,
+				    width: Math.round($(".rangeBox").width()),
+				    showLabels: false,
+				    showScale: false,
+				    isRange : true,
+				    // theme : 'theme-green',
+				    onstatechange: function () {
+				    	var valArr = $(".range-slider").val().split(',');
+				    	if(typeof valArr[0] != 'undefined' && typeof valArr[1] != 'undefined' ){
+				    		if(valArr[0] != 0){
+				    			$("#id-span-price-min span").html(parseInt(valArr[0]) + minRentVal);
+				    			$("#id-span-price-max span").html(parseInt(valArr[1]) + minRentVal);
+				    		}else if(valArr[0] == 0){
+				    			$("#id-span-price-min span").html(minRentVal);
+				    			$("#id-span-price-max span").html(parseInt(valArr[1]) + minRentVal);
+				    		}
+
+				    	}
+				    	console.log($(".range-slider").val());
+				    },
+				    ondragend: function () {
+				    	var minVal = $("#id-span-price-min span").text();
+				    	var maxVal = $("#id-span-price-max span").text();
+				    	if(typeof minVal != 'undefined' && typeof maxVal != 'undefined' ){
+				    		minVal = parseInt(minVal);
+				    		maxVal = parseInt(maxVal.split('+')[0]);
+				    		queryObject["price"][0] = minVal;
+				    		queryObject["price"][1] = maxVal;
+				    		queryMap(getAmongPriceHouse(queryObject), genSize, [0, 255, 0, 0.9]);
+				    	}
+				    	console.log(minVal);
+				    	console.log(maxVal);
+
+				    	// console.log($(".range-slider").val());
+				    }
+				});
+			}, 0);
+
+			function getAmongPriceHouse(obj) {
+				// var queryObject = {
+				// 	"ruzhulv":[0, 100],
+				// 	"xiaoshoulv":[0, 100],
+				// 	"price":[1200, 3680],
+				// 	"kfs":'all',
+				// 	"rentingObj":rentingObj,
+				// 	"ruzhulvRate":ruzhulvRate,
+				// 	"xiaoshoulvRate":xiaoshoulvRate
+				// };
+
+				var minPrice = obj["price"][0];
+				var maxPrice = obj["price"][1];
+				var minRuzhulv = obj["ruzhulv"][0];
+				var maxRuzhulv = obj["ruzhulv"][1];
+				var minXiaoshoulv = obj["xiaoshoulv"][0];
+				var maxXiaoshoulv = obj["xiaoshoulv"][1];
+				var kfs = obj["kfs"];
+
+				var queryStr = "DM in (";
+
+				for (rent in rentingObj){
+					if(rentingObj[rent] >= minPrice && rentingObj[rent] <= maxPrice){
+						if(ruzhulvRate[rent] >= minRuzhulv && ruzhulvRate[rent] <= maxRuzhulv){
+							if(xiaoshoulvRate[rent] >= minXiaoshoulv && xiaoshoulvRate[rent] <= maxXiaoshoulv){
+								queryStr += "'";
+								queryStr += rent;
+								queryStr += "'";
+								queryStr += ",";
+							}
+						}
+					}
+				}
+				if(queryStr.indexOf(",") >= 0){
+					queryStr = queryStr.substring(0,queryStr.length - 1);
+				}else {
+					queryStr += "''";
+				}
+
+				queryStr += ")";
+				if (typeof kfs != "undefined" && kfs != "all"){
+					queryStr += " and KFS='" + kfs + "'";
+				}
+				console.log(queryStr);
+				return queryStr;
+			}
+
+			// function getAmongPriceHouse(minVal, maxVal, rentingObj, kfs) {
+			// 	var queryStr = "DM in (";
+			// 	for (rent in rentingObj){
+			// 		if(rentingObj[rent] >= minVal && rentingObj[rent] <= maxVal){
+			// 			queryStr += "'";
+			// 			queryStr += rent;
+			// 			queryStr += "'";
+			// 			queryStr += ",";
+			// 		}
+			// 	}
+			// 	if(queryStr.indexOf(",") >= 0){
+			// 		queryStr = queryStr.substring(0,queryStr.length - 1);
+			// 	}else {
+			// 		queryStr += "''";
+			// 	}
+
+			// 	queryStr += ")";
+			// 	if (typeof kfs != "undefined" && typeof kfs == "string"){
+			// 		queryStr += " and KFS='" + kfs + "'";
+			// 	}
+			// 	console.log(queryStr);
+			// 	return queryStr;
+			// }
+
+			function getObjectValues(obj) {
+				var values = [];
+				for(var pro in obj){
+					values.push(obj[pro]);
+				}
+				return values;
+			}
+
+			function genCircleSymbol (size, color) {
+				return new SimpleMarkerSymbol(
+		          SimpleMarkerSymbol.STYLE_CIRCLE,
+		          size,
+		          new SimpleLineSymbol(
+		            SimpleLineSymbol.STYLE_NULL,
+		            new Color([247, 34, 101, 0.9]),
+		            1
+		          ),
+		          new Color(color)
+		        );
+			}
+			});
+		});
+	</script>
+</head>
+<body>
+	<div id="ecomap"></div>
+	<div id="searchbar">
+		<input id="sole-input" class="searchbox-content-common" type="text" name="word" autocomplete="off" maxlength="256" placeholder="查找小区，请输入小区或开发商名称" value="">
+		<button id="search-button" data-title="搜索" ></button>
+	</div>
+	<div id="content">
+		<div id="listContentBox" >
+			<div class="cs-kfs-box clearfloat">
+				<h3 class="filter-h3">筛选条件</h3>
+				<div class="cs-more-filter">
+					<label for="input-ruzhulv">入住率(%)</label>
+					<div class="more-filter-range-box">
+						<input type="hidden" class="ruzhulv-range-slider" value="100" />
+					</div>
+				</div>
+				<div class="cs-more-filter">
+					<label for="input-xiaoshoulv">销售率(%)</label>
+					<div class="more-filter-range-box">
+						<input type="hidden" class="xiaoshoulv-range-slider" value="100" />
+					</div>
+				</div>
+				<div class="cs-more-filter">
+					<label for="input-kfs">开发商</label>
+					<div class="cs-ui-select">
+				        <span>全部</span>
+				        <select name="input-kfs" id="id-input-kfs">
+							<option>全部</option>
+							<option>嘉铭</option>
+							<option>世茂</option>
+							<option>吉宝</option>
+							<option>建投</option>
+							<option>天房</option>
+							<option>万通</option>
+							<option>生井</option>
+							<option>万科</option>
+							<option>远雄</option>
+							<option>投资</option>
+							<option>阿亚拉</option>
+							<option>美利丰</option>
+							<option>生星</option>
+							<option>双威</option>
+							<option>生态投资</option>
+							<option>航天</option>
+							<option>众美</option>
+							<option>富龙</option>
+							<option>亿利</option>
+							<option>富士</option>
+							<option>碧桂园</option>
+							<option>新苑投资</option>
+							<option>力高</option>
+							<option>宝龙</option>
+						</select>
+				    </div>
+				</div>
+			</div>
+			<hr>
+			<div id="filterBox">
+				<div id="chart4"></div>
+				<div class="rangeBox">
+					<input type="hidden" class="range-slider" value="10000" />
+				</div>
+				<span class="cs-span-price" id="id-span-price-min">&yen;<span>500</span></span>
+				<span class="cs-span-price cs-span-price-right" id="id-span-price-max">&yen;<span>5000+</span></span>
+			</div>
+			<hr>
+			<div id="listContent" class="clearfloat"></div>
+		</div>
+		<div id="detailContent" class="clearfloat"></div>
+	</div>
+</body>
+</html>
+<!-- <div id="returnBtn">
+		<div class="cs-returnBtn">返回</div>
+</div>
+<table class="cs-detail-table" cellspacing="0">
+	<tr>
+		<td>小区名称</td>
+		<td>开发商</td>
+		<td>上市套数</td>
+		<td>成交套数</td>
+		<td>平均价格</td>
+		<td>入住率</td>
+	</tr>
+	<tr>
+		<td>和畅园</td>
+		<td>投资</td>
+		<td>1000</td>
+		<td>1000</td>
+		<td>8000</td>
+		<td>90%</td>
+	</tr>
+</table>
+<div id="chart1"></div>
+<div id="chart2"></div>
+<div id="chart3"></div> -->

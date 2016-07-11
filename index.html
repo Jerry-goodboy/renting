@@ -61,6 +61,17 @@
 			    "首创康桥郡": 9000,
 			    "煦园": 9000
 			};
+			var rentingHouseArr = ["宝龙欧洲城", "碧桂园·滨海城", "和畅园", "红树湾花园", "季景园", "家和园", "锦庐园", "景杉园", "鲲贝园", "鲲玺园", "鲲玉园", "兰苑", "美林园", "美韵园", "荣馨园", "尚苑", "仕景苑", "首玺园", "天和园", "新新家园", "雅境园", "悦馨苑"];
+			var imgArr = [
+				"imgs/a.jpg",
+				"imgs/b.jpg",
+				"imgs/c.jpg",
+				"imgs/d.jpg",
+				"imgs/e.jpg",
+				"imgs/f.jpg",
+				"imgs/g.jpg",
+				"imgs/h.jpg"
+			];
 			var graphicFeaturesArr;
 			var parkgraphicsLayer;
 
@@ -71,6 +82,7 @@
 			Map,PictureFillSymbol, Color, SimpleLineSymbol, SimpleMarkerSymbol, QueryTask, Query,GraphicsLayer,graphicsUtils,PictureMarkerSymbol,Graphic, FeatureLayer, ArcGISTiledMapServiceLayer, Extent, ArcGISImageServiceLayer,
 			ImageServiceParameters, parser
 			) {
+				chart4();
 				var ext = new Extent({
 					xmin:117.59786569023996,
 					ymin:39.06854167659476,
@@ -118,7 +130,7 @@
 						var html = '';
 						$("#listContent").empty();
 						kfsObj = {};
-						if(results.features.length == 0){
+						if(results.features.length == 0) {
 							alert("你所输入的信息可能有误，系统无法为您查询到结果，请核对后输入！");
 						}
 				    	for (var i=0;i<results.features.length; i++)
@@ -130,11 +142,16 @@
 
 							kfsObj[mc] = kfs;
 
-							graphic.setSymbol(genCircleSymbol(genSize, genColor));
+							if(rentingHouseArr.indexOf(mc) < 0) {
+								graphic.setSymbol(genCircleSymbol(genSize, genColor));
+							}else {
+								graphic.setSymbol(genCircleSymbol(genSize, [0, 255, 0, 0.9]));
+							}
+
 							parkgraphicsLayer.add(graphic);
 
 							html += '<div class="cs-img-block">';
-							html += '<img src="'+ 'imgs/a.jpg' + '" style="max-width:100%">';
+							html += '<img src="'+ (i<8?imgArr[i]:'imgs/a.jpg') + '" style="max-width:100%">';
 							html += '<h3 class="cs-img-h3">'+ mc +'</h3>';
 							html += '<p class="cs-img-p">&yen;'+(typeof avgPrice[mc] == 'undefined'?'9000':avgPrice[mc])+'</p>';
 							html += '<div class="cs-img-mask" data-housename="'+mc+'"></div></div>';
@@ -157,7 +174,12 @@
 							genColor = [255, 0, 0, 0.9];
 							genSize = 16;
 							var agraphic=graphicFeaturesArr[i];
-							agraphic.setSymbol(genCircleSymbol(genSize, genColor));
+
+							if(rentingHouseArr.indexOf(mc) < 0) {
+								agraphic.setSymbol(genCircleSymbol(genSize, genColor));
+							}else {
+								agraphic.setSymbol(genCircleSymbol(genSize, [0, 255, 0, 0.9]));
+							}
 						}
 
 						genColor = [0, 0, 255, 0.9];
@@ -165,7 +187,7 @@
 
 						graphic.setSymbol(genCircleSymbol(genSize, genColor));
 
-						$("#listContent").css({
+						$("#listContentBox").css({
 							display:"none"
 						});
 						$('.cs-img-mask').css({
@@ -201,7 +223,7 @@
 				}
 
 			$("#listContent").on("click",".cs-img-mask",function(){
-				$("#listContent").css({
+				$("#listContentBox").css({
 					display:"none"
 				});
 				$('#detailContent').empty();
@@ -246,6 +268,11 @@
 						genColor = [255, 0, 0, 0.9];
 						genSize = 16;
 						agraphic.setSymbol(genCircleSymbol(genSize, genColor));
+						if(rentingHouseArr.indexOf(mc) < 0) {
+							agraphic.setSymbol(genCircleSymbol(genSize, genColor));
+						}else {
+							agraphic.setSymbol(genCircleSymbol(genSize, [0, 255, 0, 0.9]));
+						}
 					}
 				}
 
@@ -255,7 +282,7 @@
 				$("#detailContent").css({
 					display:"none"
 				});
-				$('#listContent').css({
+				$('#listContentBox').css({
 					display:"block"
 				});
 			});
@@ -267,7 +294,7 @@
 				$("#detailContent").css({
 					display:"none"
 				});
-				$('#listContent').css({
+				$('#listContentBox').css({
 					display:"block"
 				});
 				if(val == ''){
@@ -305,7 +332,17 @@
 		<button id="search-button" data-title="搜索" ></button>
 	</div>
 	<div id="content">
-		<div id="listContent" class="clearfloat"></div>
+		<div id="listContentBox" >
+			<div id="filterBox">
+				<div id="chart4"></div>
+				<div id="rangeProcess"></div>
+				<div id="rangeLeft"></div>
+				<div id="rangeRight"></div>
+				<span class="cs-span-price">&yen;4500</span>
+				<span class="cs-span-price cs-span-price-right">&yen;20000+</span>
+			</div>
+			<div id="listContent" class="clearfloat"></div>
+		</div>
 		<div id="detailContent" class="clearfloat"></div>
 	</div>
 </body>

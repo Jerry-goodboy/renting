@@ -1,7 +1,96 @@
 function drawImgBlock (img, price, house) {
 	// var estateArr = ['和畅园','美林园','天和园','芦花庄园','锦庐园','南苑','兰苑','荣馨园','首玺园','尚苑','建设公寓','世茂生态城','金航湾','蓝领公寓','宝龙欧洲城','碧桂园•滨海城','力高•阳光海岸','新新家园','季景园','鲲玉园','鲲贝园','景杉园','香堤苑','鲲玺园','红树湾花园','芙蓉北苑','雅境园','芙蓉南苑','家和园','悦馨苑','兰景园','美韵园','璟苑','新颐园','依水园','首创康桥郡','澜水苑','煦园',"颐湖居","慧水苑","雅馨园"];
 	// var showItemArr = ["小区名称", "开发商", "上市套数", "成交套数", "平均价格", "入住率"];
-	
+
+}
+
+function chart4() {
+	var chart4 = echarts.init(document.getElementById('chart4'));
+	var option = {
+		title : {
+	        text: '价格范围',
+	        x: 'center',
+	        y: 10
+	    },
+	    xAxis : [
+	        {
+	            type : 'category',
+	            show : true,
+	            axisLabel: {
+	            	show:false
+	            },
+	            axisTick: {
+	            	show:false
+	            },
+	            axisLine: {
+	            	lineStyle: {
+					    color: '#ddd',
+					    width: 2,
+					    type: 'solid'
+					}
+	            },
+	            splitLine: {
+					show:false
+	            },
+	            data : ["7", "10", "1", "8", "7", "8", "1", "6", "6", "9", "4", "5", "2", "2", "7", "9", "7", "2", "0", "6", "2", "4", "8", "5", "6", "4", "3", "1", "1", "1", "9", "9", "5", "10", "5", "10", "2", "7", "8", "0", "9", "6", "5", "7", "2", "8", "4", "3", "7", "5"]
+	            // function () {
+	            // 	var randArr = [];
+	            // 	for(var i=0;i<15;i++){
+	            // 		randArr.push(Math.round(Math.random()*10).toString());
+	            // 	}
+	            // 	for(var i=15;i<35;i++){
+	            // 		randArr.push(Math.round(Math.random()*10).toString());
+	            // 	}
+	            // 	for(var i=35;i<50;i++){
+	            // 		randArr.push(Math.round(Math.random()*10).toString());
+	            // 	}
+	            // 	return randArr;
+	            // }
+	        }
+	    ],
+	    yAxis : [
+	        {
+	            type : 'value',
+	            show : false
+	        }
+	    ],
+	    grid: {
+	    	borderWidth:0,
+	    	x:50,
+	    	y:50,
+	    	x2:60,
+	    	y2:25
+	    },
+	    series : [
+	        {
+	            name:'套数',
+	            type:'bar',
+	            barMaxWidth:11,
+	            barGap:0,
+	            barCategoryGap:0,
+	            itemStyle: {
+				    normal: {
+				        color:"#aaa"
+				    }
+				},
+	            data:[0, 0, 0,  0, 0, 0, 0, 0, 3, 4, 7, 9,0, 0, 0, 0, 4, 8, 3, 8, 2, 8, 0, 0, 0, 8, 8, 0, 5,  1, 1, 0, 0, 0, 0, 0, 0,3, 1, 3, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+	            // function () {
+	            // 	var randArr = [];
+	            // 	for(var i=0;i<15;i++){
+	            // 		randArr.push(0);
+	            // 	}
+	            // 	for(var i=15;i<35;i++){
+	            // 		randArr.push(Math.round(Math.random()*10));
+	            // 	}
+	            // 	for(var i=35;i<50;i++){
+	            // 		randArr.push(0);
+	            // 	}
+	            // 	return randArr;
+	            // }
+	        }
+	    ]
+	};
+	chart4.setOption(option);
 }
 
 function chart1 () {
